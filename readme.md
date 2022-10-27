@@ -31,10 +31,8 @@ jot <single-query>
 ```
 ex:
 ```bash
-jot "coding"
+jot coding
 ```
-
-Search queries procedure is currently a no-op procedure. The idea is to be able to search against title and tags.
 
 ## Notes
 Jots are currently saved as markdown in the jots/ directory in this project.  The location of this should be configurable - possibly by utilizing `jot-store.dat`.
