@@ -1,3 +1,3 @@
 package Jot_Store.Writer is
-	function Create_Jot (JotNote : Jot) return Boolean;
+	procedure Create_Jot (JotNote : Jot);
 end Jot_Store.Writer;
