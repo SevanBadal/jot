@@ -14,7 +14,11 @@ ex:
 ```bash
 jot new-title coding,random "lorem ipsum"
 ```
-
+```bash
+jot some-title examples "
+This is a
+multiline jot\!"
+```
 ### List your jots
 ```
 jot
