@@ -12,7 +12,7 @@ package body Jot_Store.Writer is
          File => F,
          Mode => Out_File,
          Name => Path & "/" &
-         Trim (Seconds_Since_Epoch'Image, Ada.Strings.Left) & 
+         Trim (Seconds_Since_Epoch'Image, Ada.Strings.Left) &
          "-" & JotNote.Title & Jot_File_Extension
          );
       Put_Line (F, "# " & JotNote.Title);

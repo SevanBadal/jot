@@ -13,13 +13,12 @@ begin
       Jot_Store.Reader.Search_Jots (Query =>  Ada.Command_Line.Argument (1));
    elsif Ada.Command_Line.Argument_Count /= 3 then
       Ada.Text_IO.Put_Line ("Wrong number of arguments");
-   else 
+   else
       declare
          Note_Title : constant String := Ada.Command_Line.Argument (1);
          Note_Tags : constant String := Ada.Command_Line.Argument (2);
          Note_Body : constant String := Ada.Command_Line.Argument (3);
-         Res : Boolean := True;
-         Jot : Jot_Store.Jot := (
+         Jot : constant Jot_Store.Jot := (
             Title_Length => Note_Title'Length,
             Tag_Length => Note_Tags'Length,
             Body_Length => Note_Body'Length,
