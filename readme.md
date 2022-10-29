@@ -24,7 +24,7 @@ multiline jot\!"
 jot
 ```
 
-### Search your jots (single arg only)
+### Search jots by title or tag
 syntax:
 ```bash
 jot <single-query>
@@ -32,6 +32,16 @@ jot <single-query>
 ex:
 ```bash
 jot coding
+```
+
+### Search jots by body text
+syntax:
+```bash
+jot -b <query>
+```
+ex:
+```bash
+jot -b "this is a substring in a jot's body text"
 ```
 
 ## Notes
