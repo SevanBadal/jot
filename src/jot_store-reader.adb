@@ -49,6 +49,50 @@ package body Jot_Store.Reader is
          Close (File);
       end loop;
    end Search_Jots;
+   procedure Search_Jot_Bodies_Nested (TQuery : String; BQuery : String) is
+      File : File_Type;
+      Dir : Directory_Entry_Type;
+      Dir_Search : Search_Type;
+   begin
+      --- Load files
+      Start_Search (Search => Dir_Search,
+                     Directory => Path,
+                     Pattern => Jot_File_Extension_Pattern);
+      --  Iterate over files
+      while More_Entries (Dir_Search) loop
+         Get_Next_Entry (Dir_Search, Dir);
+         --  load file
+         Open (File => File,
+                  Mode => In_File,
+                  Name => Full_Name (Dir));
+         declare
+            Title_Tag_String : Ada.Strings.Unbounded.Unbounded_String;
+            Body_String : Ada.Strings.Unbounded.Unbounded_String;
+            Current_Line_Count : Integer := 1;
+            Tag_Title_Match : Boolean := False;
+         begin
+            --  Iterate over first two lines in the file (title and tags)
+            while not End_Of_File (File) loop
+               if Current_Line_Count > 2 then
+                  Ada.Strings.Unbounded.Append (Body_String,
+                                                   Get_Line (File));
+               else
+                  Ada.Strings.Unbounded.Append (Title_Tag_String,
+                                                   Get_Line (File));
+                  if Ada.Strings.Unbounded.Index (Title_Tag_String, TQuery) > 0 then
+                     Tag_Title_Match := True;
+                  end if;
+               end if;
+               Current_Line_Count := Current_Line_Count + 1;
+               exit when Current_Line_Count = 3 and then not Tag_Title_Match;
+            end loop;
+            if Ada.Strings.Unbounded.Index (Body_String, BQuery) > 0 then
+               Print_File (Dir);
+            end if;
+         end;
+         Close (File);
+      end loop;
+   end Search_Jot_Bodies_Nested;
    procedure Search_Jot_Bodies (Query : String) is
       File : File_Type;
       Dir : Directory_Entry_Type;
