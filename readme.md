@@ -43,11 +43,18 @@ ex:
 ```bash
 jot -b "this is a substring in a jot's body text"
 ```
+You can also perform strict searches where a match only occurs if the first param matches a substring in the jot's title or tags and the second param matches a substring in the body.
+
+syntax:
+```bash
+jot -b <title or tag search> <body search>
+```
+ex: 
+```bash
+jot -b html "class=\"custom-class\""
+```
 
 ## Notes
 Jots are currently saved as markdown in the jots/ directory in this project.  The location of this should be configurable - possibly by utilizing `jot-store.dat`.
 
 ## Todos
-
- - search body text of title/tag search results. ex: `jot -b <title-tag-search> <body search>`
- 	- this will require a restructuring of how commandline args are being parsed
