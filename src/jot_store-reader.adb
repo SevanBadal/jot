@@ -1,31 +1,25 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 package body Jot_Store.Reader is
-   -- function String_To_Flag (Flag_String : String) return Flag is
-   -- begin
-   --    if 
-   -- end String_To_Flag;
-   procedure Parse_Flags (Flag_Strings : String; Jot_Flags : in out Flag_Array) is
+   procedure Parse_Flags (Flag_Strings : String;
+                          Jot_Flags : in out Flag_Array) is
    begin
       if Flag_Strings (Flag_Strings'First) /= Flag_Delimiter then
          return;
       end if;
       for Flag_Char_Index in 2 .. Flag_Strings'Length loop
          declare
-            Flag_String : String :=  "" & To_Upper(Flag_Strings (Flag_Char_Index));
+            Flag_String : constant String :=  "" & To_Upper (Flag_Strings (Flag_Char_Index));
             Input_Flag : Flag;
-         begin 
+         begin
             Input_Flag := Flag'Value (Flag_String);
             Jot_Flags (Input_Flag) := True;
             exception
                when Constraint_Error =>
-                  Put_Line ("Invalid Flag Detected: " & "-" & To_Lower(Flag_String));
+                  Put_Line ("Invalid Flag Detected: " & "-" & To_Lower (Flag_String));
          end;
       end loop;
-      -- parse the flags
-      -- update Flag_Array
    end Parse_Flags;
    procedure List_Jots is
       Dir : Directory_Entry_Type;
