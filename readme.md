@@ -29,11 +29,17 @@ syntax:
 ```bash
 jot <single-query>
 ```
+or:
+```bash
+jot -t <single-query>
+```
 ex:
 ```bash
 jot coding
 ```
-
+```bash
+jot -t coding
+```
 ### Search jots by body text
 syntax:
 ```bash
@@ -43,15 +49,15 @@ ex:
 ```bash
 jot -b "this is a substring in a jot's body text"
 ```
-You can also perform strict searches where a match only occurs if the first param matches a substring in the jot's title or tags and the second param matches a substring in the body.
+You can also perform strict searches where a match only occurs if the first param matches a substring in the jot's title or tags and the second param matches a substring in the body. The order of flags doesn't matter.
 
 syntax:
 ```bash
-jot -b <title or tag search> <body search>
+jot -tb <title or tag search> <body search>
 ```
 ex: 
 ```bash
-jot -b html "class=\"custom-class\""
+jot -tb html "class=\"custom-class\""
 ```
 
 ## Notes
