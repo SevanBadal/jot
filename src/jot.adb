@@ -14,7 +14,10 @@ begin
       Jot_Store.Reader.List_Jots;
    elsif Arg_Count = 1 then
       --  shortcut to Title and Tag Search
-      Jot_Store.Reader.Search_Jots (Query =>  Ada.Command_Line.Argument (1));
+      Search_Flags (T) := True;
+      Jot_Store.Reader.Search_Jots_With_Flags
+         (Jot_Flags => Search_Flags,
+          TQuery => Ada.Command_Line.Argument (1));
    elsif Arg_Count > 1 then
       --  Parse Flags into Search_Flags array
       Jot_Store.Reader.Parse_Flags
@@ -24,22 +27,26 @@ begin
          if Arg_Count /= 3 then
             Ada.Text_IO.Put_Line ("Wrong number of arguments for flags -bt");
          else
-            Jot_Store.Reader.Search_Jot_Bodies_Nested
-               (Ada.Command_Line.Argument (2),
+            Jot_Store.Reader.Search_Jots_With_Flags
+               (Search_Flags,
+                Ada.Command_Line.Argument (2),
                 Ada.Command_Line.Argument (3));
          end if;
       elsif Search_Flags (B) then
          if Arg_Count /= 2 then
             Put_Line ("Wrong number of arguments for flags -b");
          else
-            Jot_Store.Reader.Search_Jot_Bodies (Ada.Command_Line.Argument (2));
+            Jot_Store.Reader.Search_Jots_With_Flags
+               (Jot_Flags => Search_Flags,
+                BQuery => Ada.Command_Line.Argument (2));
          end if;
       elsif Search_Flags (T) then
          if Arg_Count /= 2 then
             Put_Line ("Wrong number of arguments for flags -t");
          else
-            Jot_Store.Reader.Search_Jots
-               (Query => Ada.Command_Line.Argument (2));
+            Jot_Store.Reader.Search_Jots_With_Flags
+               (Jot_Flags => Search_Flags,
+                TQuery => Ada.Command_Line.Argument (2));
          end if;
       else --  no flags
          if Arg_Count /= 3 then
