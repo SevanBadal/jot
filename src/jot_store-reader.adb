@@ -1,23 +1,29 @@
+pragma Ada_2022;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 package body Jot_Store.Reader is
    procedure Parse_Flags (Flag_Strings : String;
-                          Jot_Flags : in out Flag_Array) is
+                          Jot_Flags : in out Flag_Array;
+                          Flag_Count : in out Integer) is
    begin
       if Flag_Strings (Flag_Strings'First) /= Flag_Delimiter then
          return;
       end if;
       for Flag_Char_Index in 2 .. Flag_Strings'Length loop
          declare
-            Flag_String : constant String :=  "" & To_Upper (Flag_Strings (Flag_Char_Index));
+            Flag_String : constant String :=  "" &
+               To_Upper (Flag_Strings (Flag_Char_Index));
             Input_Flag : Flag;
          begin
             Input_Flag := Flag'Value (Flag_String);
             Jot_Flags (Input_Flag) := True;
+            Flag_Count := @ + 1;
             exception
                when Constraint_Error =>
-                  Put_Line ("Invalid Flag Detected: " & "-" & To_Lower (Flag_String));
+                  Put_Line ("Invalid Flag Detected: "
+                     & "-"
+                        & To_Lower (Flag_String));
          end;
       end loop;
    end Parse_Flags;
@@ -33,7 +39,7 @@ package body Jot_Store.Reader is
          Print_File (Dir);
       end loop;
    end List_Jots;
-   procedure Search_Jots_With_Flags (Jot_Flags : in Flag_Array;
+   procedure Search_Jots_With_Flags (Jot_Flags : Flag_Array;
                                      TQuery : String := "";
                                      BQuery : String := "") is
       File : File_Type;
@@ -64,8 +70,11 @@ package body Jot_Store.Reader is
                                                    Get_Line (File));
                else
                   if Jot_Flags (T) then
-                     Ada.Strings.Unbounded.Append (Title_Tag_String, Get_Line (File));
-                     if Ada.Strings.Unbounded.Index (Title_Tag_String, TQuery) > 0 then
+                     Ada.Strings.Unbounded.Append
+                        (Title_Tag_String, Get_Line (File));
+                     if Ada.Strings.Unbounded.Index
+                        (Title_Tag_String, TQuery) > 0
+                     then
                         Tag_Title_Match := True;
                      end if;
                   else
@@ -73,15 +82,20 @@ package body Jot_Store.Reader is
                   end if;
                end if;
                Current_Line_Count := Current_Line_Count + 1;
-               exit when Current_Line_Count = 3 and Jot_Flags (T) and not Tag_Title_Match;
+               exit when Current_Line_Count = 3
+                  and Jot_Flags (T)
+                  and not Tag_Title_Match;
             end loop;
-            if Jot_Flags (T) and then not 
-               Jot_Flags (B) and then 
+            if Jot_Flags (T) and then not
+               Jot_Flags (B) and then
                Ada.Strings.Unbounded.Index (Title_Tag_String,
-                                            TQuery) > 0 then
+                                            TQuery) > 0
+            then
                Print_File (Dir);
             end if;
-            if Jot_Flags (B) and then Ada.Strings.Unbounded.Index (Body_String, BQuery) > 0 then
+            if Jot_Flags (B) and then Ada.Strings.Unbounded.Index
+               (Body_String, BQuery) > 0
+            then
                Print_File (Dir);
             end if;
          end;
