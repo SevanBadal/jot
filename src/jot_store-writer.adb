@@ -19,5 +19,8 @@ package body Jot_Store.Writer is
       Put_Line (F, JotNote.Tags);
       Put_Line (F, JotNote.Jot_Body);
       Close (F);
+      Put_Line ("Note Title: " & JotNote.Title);
+      Put_Line ("Note Tags: " & JotNote.Tags);
+      Put_Line ("Note Body: " & JotNote.Jot_Body);
    end Create_Jot;
 end Jot_Store.Writer;

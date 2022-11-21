@@ -6,49 +6,40 @@ with Jot_Store.Writer;
 with Jot_Store.Reader;
 
 procedure Jot is
+   Flag_Count : Integer := 0;
+   Arg_Count : constant Integer := Ada.Command_Line.Argument_Count;
    Search_Flags : Flag_Array :=
       (Flag'First .. Flag'Last => False);
-   Arg_Count : constant Integer := Ada.Command_Line.Argument_Count;
 begin
+   --  List all jots if no CLI args
    if Arg_Count = 0 then
       Jot_Store.Reader.List_Jots;
+   --  Search jots by title and tag if only 1 CLI arg
    elsif Arg_Count = 1 then
-      --  shortcut to Title and Tag Search
       Search_Flags (T) := True;
       Jot_Store.Reader.Search_Jots_With_Flags
          (Jot_Flags => Search_Flags,
           TQuery => Ada.Command_Line.Argument (1));
-   elsif Arg_Count > 1 then
+   else
       --  Parse Flags into Search_Flags array
       Jot_Store.Reader.Parse_Flags
          (Flag_Strings => Ada.Command_Line.Argument (1),
-          Jot_Flags    => Search_Flags);
-      if Search_Flags (B) and then Search_Flags (T) then
-         if Arg_Count /= 3 then
-            Ada.Text_IO.Put_Line ("Wrong number of arguments for flags -bt");
-         else
-            Jot_Store.Reader.Search_Jots_With_Flags
-               (Search_Flags,
-                Ada.Command_Line.Argument (2),
-                Ada.Command_Line.Argument (3));
-         end if;
-      elsif Search_Flags (B) then
-         if Arg_Count /= 2 then
-            Put_Line ("Wrong number of arguments for flags -b");
-         else
+          Jot_Flags    => Search_Flags,
+          Flag_Count   => Flag_Count);
+      --  if no flags then create new jot
+      if Flag_Count > 0 then
             Jot_Store.Reader.Search_Jots_With_Flags
                (Jot_Flags => Search_Flags,
-                BQuery => Ada.Command_Line.Argument (2));
-         end if;
-      elsif Search_Flags (T) then
-         if Arg_Count /= 2 then
-            Put_Line ("Wrong number of arguments for flags -t");
-         else
-            Jot_Store.Reader.Search_Jots_With_Flags
-               (Jot_Flags => Search_Flags,
-                TQuery => Ada.Command_Line.Argument (2));
-         end if;
-      else --  no flags
+                TQuery => (if Search_Flags (T) then
+                              Ada.Command_Line.Argument (2) else ""),
+                BQuery => (if Search_Flags (B) and then
+                              not Search_Flags (T) then
+                              Ada.Command_Line.Argument (2)
+                              elsif Search_Flags (B) and then
+                                 Search_Flags (T) then
+                                    Ada.Command_Line.Argument (3)
+                                    else ""));
+      else
          if Arg_Count /= 3 then
             Put_Line ("Wrong number of arguments");
          else
@@ -66,9 +57,6 @@ begin
                );
             begin
                Jot_Config.Configure_Datastore;
-               Put_Line ("Note Title: " & Jot.Title);
-               Put_Line ("Note Tags: " & Note_Tags);
-               Put_Line ("Note Body: " & Note_Body);
                Jot_Store.Writer.Create_Jot (JotNote => Jot);
             end;
          end if;
