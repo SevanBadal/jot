@@ -66,3 +66,4 @@ Jots are currently saved as markdown in the jots/ directory in this project.  Th
 ## Todos
 - Validate Arg Count against Flags
 - Print path to jot after jot created
+- Case insensitive search (-i)
