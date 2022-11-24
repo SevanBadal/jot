@@ -1,4 +1,6 @@
 package Jot_Store is
+   CLI_Argument_Error : exception;
+
    type Jot (Title_Length, Tag_Length, Body_Length : Natural) is record
       Title : String (1 .. Title_Length);
       Tags : String (1 .. Tag_Length);

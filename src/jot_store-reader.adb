@@ -2,6 +2,7 @@ pragma Ada_2022;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
+
 package body Jot_Store.Reader is
    procedure Parse_Flags (Flag_Strings : String;
                           Jot_Flags : in out Flag_Array;

@@ -62,4 +62,9 @@ begin
          end if;
       end if;
    end if;
+   exception
+      when Jot_Store.CLI_Argument_Error =>
+         Put_Line ("Wrong Number of Arguments");
+      when others =>
+         Put_Line ("Unknown Error");
 end Jot;
