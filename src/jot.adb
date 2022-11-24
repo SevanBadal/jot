@@ -30,15 +30,16 @@ begin
       if Flag_Count > 0 then
             Jot_Store.Reader.Search_Jots_With_Flags
                (Jot_Flags => Search_Flags,
-                TQuery => (if Search_Flags (T) then
-                              Ada.Command_Line.Argument (2) else ""),
-                BQuery => (if Search_Flags (B) and then
-                              not Search_Flags (T) then
-                              Ada.Command_Line.Argument (2)
-                              elsif Search_Flags (B) and then
-                                 Search_Flags (T) then
-                                    Ada.Command_Line.Argument (3)
-                                    else ""));
+                TQuery => (if Search_Flags (T)
+                           then Ada.Command_Line.Argument (2)
+                           else ""),
+                BQuery => (if Search_Flags (B) and
+                           then not Search_Flags (T)
+                           then Ada.Command_Line.Argument (2)
+                           elsif Search_Flags (B) and
+                           then Search_Flags (T)
+                           then Ada.Command_Line.Argument (3)
+                           else ""));
       else
          if Arg_Count /= 3 then
             Put_Line ("Wrong number of arguments");
