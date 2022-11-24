@@ -13,7 +13,9 @@ package Jot_Store.Reader is
                      then CLI.Argument_Count = 2
                      elsif Jot_Flags (T)
                      and then Jot_Flags (B)
-                     then CLI.Argument_Count = 3)
+                     then CLI.Argument_Count = 3
+                     elsif Jot_Flags (I)
+                     then CLI.Argument_Count >= 1)
                      or else raise CLI_Argument_Error
                      with "Wrong number of arguments");
    procedure Search_Jots_With_Flags (Jot_Flags : Flag_Array;
