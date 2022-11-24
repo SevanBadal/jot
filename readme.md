@@ -64,6 +64,5 @@ jot -tb html "class=\"custom-class\""
 Jots are currently saved as markdown in the jots/ directory in this project.  The location of this should be configurable - possibly by utilizing `jot-store.dat`.
 
 ## Todos
-- Validate Arg Count against Flags
 - Print path to jot after jot created
 - Case insensitive search (-i)
