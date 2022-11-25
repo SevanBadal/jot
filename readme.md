@@ -60,6 +60,16 @@ ex:
 jott -tb html "class=\"custom-class\""
 ```
 
+## Flags
+- `-t`
+	- title/tag search
+- `-b`
+	- body search
+- `-i`
+	- case insensitive search
+- `-c`
+	- add character count column to output
+
 ## Notes
 Jotts are currently saved as markdown in the jotts/ directory in this project.  The location of this should be configurable - possibly by utilizing `jott-store.dat`.
 
