@@ -1,67 +1,66 @@
-# jot
+# jott
 ## A command-line note taking app built with Ada!
 
 ### setup
 - install [Alire](https://alire.ada.dev/docs/#getting-started)
 - pull repo
 - `alr build`
-### Create a jot
+### Create a jott
 syntax:
 ```bash
-jot <title> <tag1,tag2,tagN> <"body text">
+jott <title> <tag1,tag2,tagN> <"body text">
 ```
 ex:
 ```bash
-jot new-title coding,random "lorem ipsum"
+jott new-title coding,random "lorem ipsum"
 ```
 ```bash
-jot some-title examples "
+jott some-title examples "
 This is a
-multiline jot\!"
+multiline jott\!"
 ```
-### List your jots
+### List your jotts
 ```
-jot
+jott
 ```
 
-### Search jots by title or tag
+### Search jotts by title or tag
 syntax:
 ```bash
-jot <single-query>
+jott <single-query>
 ```
 or:
 ```bash
-jot -t <single-query>
+jott -t <single-query>
 ```
 ex:
 ```bash
-jot coding
+jott coding
 ```
 ```bash
-jot -t coding
+jott -t coding
 ```
 ### Search jots by body text
 syntax:
 ```bash
-jot -b <query>
+jott -b <query>
 ```
 ex:
 ```bash
-jot -b "this is a substring in a jot's body text"
+jott -b "this is a substring in a jott's body text"
 ```
-You can also perform strict searches where a match only occurs if the first param matches a substring in the jot's title or tags and the second param matches a substring in the body. The order of flags doesn't matter.
+You can also perform strict searches where a match only occurs if the first param matches a substring in the jott's title or tags and the second param matches a substring in the body. The order of flags doesn't matter.
 
 syntax:
 ```bash
-jot -tb <title or tag search> <body search>
+jott -tb <title or tag search> <body search>
 ```
 ex: 
 ```bash
-jot -tb html "class=\"custom-class\""
+jott -tb html "class=\"custom-class\""
 ```
 
 ## Notes
-Jots are currently saved as markdown in the jots/ directory in this project.  The location of this should be configurable - possibly by utilizing `jot-store.dat`.
+Jotts are currently saved as markdown in the jotts/ directory in this project.  The location of this should be configurable - possibly by utilizing `jott-store.dat`.
 
 ## Todos
-- Print path to jot after jot created
