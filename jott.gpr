@@ -1,14 +1,14 @@
-with "config/jot_config.gpr";
-project Jot is
+with "config/jott_config.gpr";
+project Jott is
 
    for Source_Dirs use ("src/", "config/");
-   for Object_Dir use "obj/" & Jot_Config.Build_Profile;
+   for Object_Dir use "obj/" & Jott_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Exec_Dir use "bin";
-   for Main use ("jot.adb");
+   for Main use ("jott.adb");
 
    package Compiler is
-      for Default_Switches ("Ada") use Jot_Config.Ada_Compiler_Switches;
+      for Default_Switches ("Ada") use Jott_Config.Ada_Compiler_Switches;
    end Compiler;
 
    package Binder is
@@ -19,4 +19,4 @@ project Jot is
       for Artifacts (".") use ("share");
    end Install;
 
-end Jot;
+end Jott;

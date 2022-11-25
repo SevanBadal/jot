@@ -1,12 +1,12 @@
 with Ada.Text_IO; use Ada.Text_IO;
-package body Jot_Config is
+package body Jott_Config is
    procedure Configure_Datastore is
       F : Ada.Text_IO.File_Type;
    begin
-      Open (File => F, Mode => Append_File, Name => "./jot-store.dat");
+      Open (File => F, Mode => Append_File, Name => "./jott-store.dat");
       exception
          when Name_Error =>
-            Create (File => F, Mode => Out_File, Name => "./jot-store.dat");
+            Create (File => F, Mode => Out_File, Name => "./jott-store.dat");
             Close (F);
    end Configure_Datastore;
-end Jot_Config;
+end Jott_Config;

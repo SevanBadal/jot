@@ -2,9 +2,9 @@ pragma Ada_2022;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 
-package body Jot_Store.Reader is
+package body Jott_Store.Reader is
    procedure Parse_Flags (Flag_Strings : String;
-                          Jot_Flags : in out Flag_Array;
+                          Jott_Flags : in out Flag_Array;
                           Flag_Count : in out Integer) is
    begin
       if Flag_Strings (Flag_Strings'First) /= Flag_Delimiter then
@@ -17,7 +17,7 @@ package body Jot_Store.Reader is
             Input_Flag : Flag;
          begin
             Input_Flag := Flag'Value (Flag_String);
-            Jot_Flags (Input_Flag) := True;
+            Jott_Flags (Input_Flag) := True;
             Flag_Count := @ + 1;
             exception
                when Constraint_Error =>
@@ -27,19 +27,19 @@ package body Jot_Store.Reader is
          end;
       end loop;
    end Parse_Flags;
-   procedure List_Jots is
+   procedure List_Jotts is
       Dir : Directory_Entry_Type;
       Dir_Search : Search_Type;
    begin
       Start_Search (Search => Dir_Search,
                      Directory => Path,
-                     Pattern => Jot_File_Extension_Pattern);
+                     Pattern => Jott_File_Extension_Pattern);
       while More_Entries (Dir_Search) loop
          Get_Next_Entry (Dir_Search, Dir);
          Print_File (Dir);
       end loop;
-   end List_Jots;
-   procedure Search_Jots_With_Flags (Jot_Flags : Flag_Array;
+   end List_Jotts;
+   procedure Search_Jotts_With_Flags (Jott_Flags : Flag_Array;
                                      TQuery : String := "";
                                      BQuery : String := "") is
       File : File_Type;
@@ -49,7 +49,7 @@ package body Jot_Store.Reader is
       --- Load files
       Start_Search (Search => Dir_Search,
                      Directory => Path,
-                     Pattern => Jot_File_Extension_Pattern);
+                     Pattern => Jott_File_Extension_Pattern);
       --  Iterate over files
       while More_Entries (Dir_Search) loop
          Get_Next_Entry (Dir_Search, Dir);
@@ -65,15 +65,15 @@ package body Jot_Store.Reader is
          begin
             --  Iterate over first two lines in the file (title and tags)
             while not End_Of_File (File) loop
-               if Current_Line_Count > 2 and then Jot_Flags (B) then
+               if Current_Line_Count > 2 and then Jott_Flags (B) then
                   SU.Append (Body_String,
                                                    Get_Line (File));
                else
-                  if Jot_Flags (T) then
+                  if Jott_Flags (T) then
                      SU.Append
                         (Title_Tag_String, Get_Line (File));
                      if SU.Index
-                        ( Process_String(Jot_Flags, Title_Tag_String), Process_String(Jot_Flags, TQuery)) >= 0
+                        ( Process_String(Jott_Flags, Title_Tag_String), Process_String(Jott_Flags, TQuery)) >= 0
                      then
                         Tag_Title_Match := True;
                      end if;
@@ -83,48 +83,56 @@ package body Jot_Store.Reader is
                end if;
                Current_Line_Count := Current_Line_Count + 1;
                exit when Current_Line_Count = 3
-                  and Jot_Flags (T)
+                  and Jott_Flags (T)
                   and not Tag_Title_Match;
             end loop;
-            if Jot_Flags (T) and then not
-               Jot_Flags (B) and then
-               SU.Index (Process_String(Jot_Flags, Title_Tag_String), Process_String(Jot_Flags, TQuery)) > 0
+            if Jott_Flags (T) and then not
+               Jott_Flags (B) and then
+               SU.Index (Process_String(Jott_Flags, Title_Tag_String), Process_String(Jott_Flags, TQuery)) > 0
             then
-               Print_File (Dir);
+               Print_File (Jott_Flags, Dir);
             end if;
-            if Jot_Flags (B) and then SU.Index
-               (Process_String(Jot_Flags, Body_String), Process_String(Jot_Flags, BQuery)) > 0
+            if Jott_Flags (B) and then SU.Index
+               (Process_String(Jott_Flags, Body_String), Process_String(Jott_Flags, BQuery)) > 0
             then
-               Print_File (Dir);
+               Print_File (Jott_Flags, Dir);
             end if;
          end;
          Close (File);
       end loop;
-   end Search_Jots_With_Flags;
-   function Process_String ( Jot_Flags : Flag_Array; Some_String : String ) return String is
+   end Search_Jotts_With_Flags;
+   function Process_String ( Jott_Flags : Flag_Array; Some_String : String ) return String is
    begin
-      if Jot_Flags (I) then
+      if Jott_Flags (I) then
          return To_Lower (Some_String);
       else
          return Some_String;  
       end if;
    end Process_String;
-   function Process_String ( Jot_Flags : Flag_Array; Some_Unbounded_String : SU.Unbounded_String ) return SU.Unbounded_String is
+   function Process_String ( Jott_Flags : Flag_Array; Some_Unbounded_String : SU.Unbounded_String ) return SU.Unbounded_String is
    begin
-      if Jot_Flags (I) then
+      if Jott_Flags (I) then
          return SU.To_Unbounded_String( To_Lower (SU.To_String (Some_Unbounded_String)));
       else
          return Some_Unbounded_String;  
       end if;
    end Process_String;
+   procedure Print_File (Jott_Flags : Flag_Array; Dir : Directory_Entry_Type) is
+   begin
+      if Jott_Flags (C) and then Kind (Dir) = Ordinary_File then
+         Put (Full_Name (Dir));
+         Set_Col (50);
+         Put_Line (Size (Dir)'Image);
+      else
+         Put_Line (Full_Name (Dir));
+      end if;
+   end Print_File;
    procedure Print_File (Dir : Directory_Entry_Type) is
    begin
       Put (Full_Name (Dir));
       Set_Col (50);
       if Kind (Dir) = Ordinary_File then
-         Put (Size (Dir)'Image);
+         Put_Line (Size (Dir)'Image);
       end if;
-      Set_Col (60);
-      Put_Line (Kind (Dir)'Image);
    end Print_File;
-end Jot_Store.Reader;
+end Jott_Store.Reader;
