@@ -2,7 +2,10 @@ pragma Assertion_Policy (Check);
 with Ada.Directories; use Ada.Directories;
 with Jot_Config; use Jot_Config;
 with Ada.Command_Line;
+with Ada.Strings.Unbounded;
+
 package Jot_Store.Reader is
+   package SU   renames Ada.Strings.Unbounded;
    package CLI renames Ada.Command_Line;
    procedure List_Jots;
    procedure Print_File (Dir : Directory_Entry_Type);
@@ -23,4 +26,6 @@ package Jot_Store.Reader is
                                      BQuery : String := "");
 private
    Flag_Delimiter : constant Character := '-';
+   function Process_String ( Jot_Flags : Flag_Array; Some_String : String ) return String;
+   function Process_String ( Jot_Flags : Flag_Array; Some_Unbounded_String : SU.Unbounded_String ) return SU.Unbounded_String;
 end Jot_Store.Reader;

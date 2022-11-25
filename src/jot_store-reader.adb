@@ -1,6 +1,5 @@
 pragma Ada_2022;
 with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Strings.Unbounded;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 
 package body Jot_Store.Reader is
@@ -59,22 +58,22 @@ package body Jot_Store.Reader is
                   Mode => In_File,
                   Name => Full_Name (Dir));
          declare
-            Title_Tag_String : Ada.Strings.Unbounded.Unbounded_String;
-            Body_String : Ada.Strings.Unbounded.Unbounded_String;
+            Title_Tag_String : SU.Unbounded_String;
+            Body_String : SU.Unbounded_String;
             Current_Line_Count : Integer := 1;
             Tag_Title_Match : Boolean := False;
          begin
             --  Iterate over first two lines in the file (title and tags)
             while not End_Of_File (File) loop
                if Current_Line_Count > 2 and then Jot_Flags (B) then
-                  Ada.Strings.Unbounded.Append (Body_String,
+                  SU.Append (Body_String,
                                                    Get_Line (File));
                else
                   if Jot_Flags (T) then
-                     Ada.Strings.Unbounded.Append
+                     SU.Append
                         (Title_Tag_String, Get_Line (File));
-                     if Ada.Strings.Unbounded.Index
-                        (Title_Tag_String, TQuery) > 0
+                     if SU.Index
+                        ( Process_String(Jot_Flags, Title_Tag_String), Process_String(Jot_Flags, TQuery)) >= 0
                      then
                         Tag_Title_Match := True;
                      end if;
@@ -89,13 +88,12 @@ package body Jot_Store.Reader is
             end loop;
             if Jot_Flags (T) and then not
                Jot_Flags (B) and then
-               Ada.Strings.Unbounded.Index (Title_Tag_String,
-                                            TQuery) > 0
+               SU.Index (Process_String(Jot_Flags, Title_Tag_String), Process_String(Jot_Flags, TQuery)) > 0
             then
                Print_File (Dir);
             end if;
-            if Jot_Flags (B) and then Ada.Strings.Unbounded.Index
-               (Body_String, BQuery) > 0
+            if Jot_Flags (B) and then SU.Index
+               (Process_String(Jot_Flags, Body_String), Process_String(Jot_Flags, BQuery)) > 0
             then
                Print_File (Dir);
             end if;
@@ -103,6 +101,22 @@ package body Jot_Store.Reader is
          Close (File);
       end loop;
    end Search_Jots_With_Flags;
+   function Process_String ( Jot_Flags : Flag_Array; Some_String : String ) return String is
+   begin
+      if Jot_Flags (I) then
+         return To_Lower (Some_String);
+      else
+         return Some_String;  
+      end if;
+   end Process_String;
+   function Process_String ( Jot_Flags : Flag_Array; Some_Unbounded_String : SU.Unbounded_String ) return SU.Unbounded_String is
+   begin
+      if Jot_Flags (I) then
+         return SU.To_Unbounded_String( To_Lower (SU.To_String (Some_Unbounded_String)));
+      else
+         return Some_Unbounded_String;  
+      end if;
+   end Process_String;
    procedure Print_File (Dir : Directory_Entry_Type) is
    begin
       Put (Full_Name (Dir));

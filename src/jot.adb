@@ -26,6 +26,7 @@ begin
          (Flag_Strings => Ada.Command_Line.Argument (1),
           Jot_Flags    => Search_Flags,
           Flag_Count   => Flag_Count);
+      Put_Line (Flag_Count'Image);
       --  if no flags then create new jot
       if Flag_Count > 0 then
             Jot_Store.Reader.Search_Jots_With_Flags
