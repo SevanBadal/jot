@@ -73,7 +73,7 @@ package body Jott_Store.Reader is
                      SU.Append
                         (Title_Tag_String, Get_Line (File));
                      if SU.Index
-                        ( Process_String(Jott_Flags, Title_Tag_String), Process_String(Jott_Flags, TQuery)) >= 0
+                        ( Process_String(Jott_Flags, Title_Tag_String), Process_String(Jott_Flags, TQuery)) > 0
                      then
                         Tag_Title_Match := True;
                      end if;
@@ -82,9 +82,10 @@ package body Jott_Store.Reader is
                   end if;
                end if;
                Current_Line_Count := Current_Line_Count + 1;
-               exit when Current_Line_Count = 3
-                  and Jott_Flags (T)
-                  and not Tag_Title_Match;
+               exit when (Current_Line_Count = 3
+                  and Jott_Flags (T) and not Jott_Flags (B))
+                  or (Jott_Flags (T) and Current_Line_Count = 3
+                  and not Tag_Title_Match);
             end loop;
             if Jott_Flags (T) and then not
                Jott_Flags (B) and then
@@ -92,7 +93,12 @@ package body Jott_Store.Reader is
             then
                Print_File (Jott_Flags, Dir);
             end if;
-            if Jott_Flags (B) and then SU.Index
+            if Jott_Flags (B) and then not Jott_Flags (T) and then SU.Index
+               (Process_String(Jott_Flags, Body_String), Process_String(Jott_Flags, BQuery)) > 0
+            then
+               Print_File (Jott_Flags, Dir);
+            end if;
+            if Jott_Flags (B) and then Tag_Title_Match and then SU.Index
                (Process_String(Jott_Flags, Body_String), Process_String(Jott_Flags, BQuery)) > 0
             then
                Print_File (Jott_Flags, Dir);
