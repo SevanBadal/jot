@@ -65,4 +65,3 @@ Jots are currently saved as markdown in the jots/ directory in this project.  Th
 
 ## Todos
 - Print path to jot after jot created
-- Case insensitive search (-i)
