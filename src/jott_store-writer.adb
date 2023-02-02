@@ -13,14 +13,14 @@ package body Jott_Store.Writer is
          Mode => Out_File,
          Name => Path & "/" &
          Trim (Seconds_Since_Epoch'Image, Ada.Strings.Left) &
-         "-" & JottNote.Title & Jott_File_Extension
+               "-" & JottNote.Title & Jott_File_Extension
          );
       Put_Line (F, "# " & JottNote.Title);
       Put_Line (F, JottNote.Tags);
       Put_Line (F, JottNote.Jott_Body);
       Close (F);
-      Put_Line ("Note Title: " & JottNote.Title);
-      Put_Line ("Note Tags: " & JottNote.Tags);
-      Put_Line ("Note Body: " & JottNote.Jott_Body);
+      Put_Line (Path & "/" &
+      Trim (Seconds_Since_Epoch'Image, Ada.Strings.Left) &
+            "-" & JottNote.Title & Jott_File_Extension);
    end Create_Jott;
 end Jott_Store.Writer;
