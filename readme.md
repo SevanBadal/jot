@@ -74,3 +74,18 @@ jott -tb html "class=\"custom-class\""
 Jotts are currently saved as markdown in the jotts/ directory in this project.  The location of this should be configurable - possibly by utilizing `jott-store.dat`.
 
 ## Todos
+- add help command
+
+## Useful Bash Commands
+- get the `nth` jott path from a search result
+  ```bash
+  jott <some-query> | sed -n '2 p'
+  ```
+- get the last jott path from a search result
+  ```bash
+  jott <some-query> | sed -n '$p'
+  ```
+- print the contents of results
+  ```bash
+  jott <some-query> | xargs cat
+  ```
